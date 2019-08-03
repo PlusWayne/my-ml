@@ -9,10 +9,13 @@ class LogisticRegression(object):
         self.learning_rate = learning_rate
         self.max_iteration = max_iteration
         self.sess = tf.InteractiveSession()
+        self.x = None
+        self.y = None
+        self.y_ = None
         self.w = None
         self.b = None
 
-    def train(self, x_train, y_train, batch_size=32):
+    def fit(self, x_train, y_train, batch_size=32):
         x_train = np.array(x_train)
         y_train = np.array(y_train).reshape(-1, 1)
         print(x_train.shape)
@@ -22,7 +25,7 @@ class LogisticRegression(object):
         self.w = tf.Variable(tf.random_normal(shape=[x_train.shape[1], 1], dtype=tf.float64))
         self.b = tf.Variable(tf.constant(value=0.01, shape=[1], dtype=tf.float64))
         self.y = tf.nn.sigmoid(tf.matmul(self.x, self.w) + self.b)
-        loss = -tf.reduce_sum(self.y_ * tf.log(self.y+0.000001) + (1 - self.y_) * tf.log(1 - self.y + 0.000001))
+        loss = -tf.reduce_sum(self.y_ * tf.log(self.y + 0.000001) + (1 - self.y_) * tf.log(1 - self.y + 0.000001))
         # loss = -tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=self.y, labels=self.y_))
         train = tf.train.AdamOptimizer(self.learning_rate).minimize(loss)
         self.sess.run(tf.global_variables_initializer())
@@ -45,21 +48,24 @@ class LogisticRegression(object):
         return y_predict
 
 
-from sklearn.datasets import load_digits
-from sklearn.model_selection import train_test_split
+if __name__ == '__main__':
+    from sklearn.datasets import load_digits
+    from sklearn.model_selection import train_test_split
 
-raw_data = load_digits(n_class=2)
-X = np.array(raw_data.data)
-y = np.array(raw_data.target)
+    # from sklearn.linear_model import LogisticRegression
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-clf = LogisticRegression(max_iteration=2)
-clf.train(np.array(X_train), np.array(y_train))
-# print(X_test.shape)
-y_ = clf.predict(np.array(X_test))
-count = 0
-for i in range(len(y_)):
-    if y_test[i] == y_[i]:
-        count += 1
+    raw_data = load_digits(n_class=2)
+    X = np.array(raw_data.data)
+    y = np.array(raw_data.target)
 
-print(count/len(y_))
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+    clf = LogisticRegression(max_iteration=10000)
+    clf.fit(np.array(X_train), np.array(y_train))
+    # print(X_test.shape)
+    y_ = clf.predict(np.array(X_test))
+    count = 0
+    for i in range(len(y_)):
+        if y_test[i] == y_[i]:
+            count += 1
+
+    print(count / len(y_))
