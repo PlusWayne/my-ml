@@ -32,4 +32,7 @@
 
 ##4. k means算法的变种
 1. k-means++：这个算法只改进了每次选取初始簇中心。在原有的算法是随机选取K的簇中心。k means++算法，依次迭代的取选取k个中心。假设已经选取了k-1个簇中心，那么计算剩下的每一个样本分别到这k-1个簇中心的距离，并最小的距离作为选择到该点的概率，计算完所有点之后需要归一化概率。那么距离越远的点就有更高的概率被选中，比较符合直觉。
-2. ISODATA:![RUNOOB 图标](https://pic3.zhimg.com/v2-ebe6d577c8a70cd4e639a8a5621248be_b.jpg)
+2. ISODATA:\
+![](https://pic3.zhimg.com/v2-ebe6d577c8a70cd4e639a8a5621248be_b.jpg)
+![](https://www.biaodianfu.com/wp-content/uploads/2018/06/isodata-2.png)
+![](https://www.biaodianfu.com/wp-content/uploads/2018/06/isodata-3.png)
